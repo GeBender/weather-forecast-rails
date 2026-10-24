@@ -1,2 +1,28 @@
-<h1>Forecasts#index</h1>
-<p>Find me in app/views/forecasts/index.html.erb</p>
+<h1>Weather Forecast</h1>
+
+<p>Enter an address to check the weather forecast.</p>
+
+<%= form_with url: root_path, method: :get do |form| %>
+  <div>
+    <%= form.label :address, "Address" %>
+    <%= form.text_field :address,
+                        value: params[:address],
+                        placeholder: "Enter a US address",
+                        required: true %>
+  </div>
+
+  <%= form.submit "Get Forecast" %>
+<% end %>
+
+<% if @error.present? %>
+  <p role="alert"><%= @error %></p>
+<% end %>
+
+<% if @zip_code.present? %>
+  <h2>Location found</h2>
+  <p>ZIP Code: <strong><%= @zip_code %></strong></p>
+<% end %>
+
+<p>
+  Location data © OpenStreetMap contributors.
+</p>
