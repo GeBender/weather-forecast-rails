@@ -1,28 +1,65 @@
-<h1>Weather Forecast</h1>
+<main>
+  <h1>Weather Forecast</h1>
 
-<p>Enter an address to check the weather forecast.</p>
+  <p>Enter a US address to check the weather forecast.</p>
 
-<%= form_with url: root_path, method: :get do |form| %>
-  <div>
-    <%= form.label :address, "Address" %>
-    <%= form.text_field :address,
-                        value: params[:address],
-                        placeholder: "Enter a US address",
-                        required: true %>
-  </div>
+  <%= form_with url: root_path, method: :get do |form| %>
+    <div>
+      <%= form.label :address, "Full Address" %>
 
-  <%= form.submit "Get Forecast" %>
-<% end %>
+      <%= form.text_field :address,
+            value: @address,
+            placeholder: "1600 Pennsylvania Avenue NW, Washington, DC",
+            required: true,
+            size: 65 %>
+    </div>
 
-<% if @error.present? %>
-  <p role="alert"><%= @error %></p>
-<% end %>
+    <div>
+      <%= form.submit "Get Forecast" %>
+    </div>
+  <% end %>
 
-<% if @zip_code.present? %>
-  <h2>Location found</h2>
-  <p>ZIP Code: <strong><%= @zip_code %></strong></p>
-<% end %>
+  <% if @error.present? %>
+    <p role="alert"><%= @error %></p>
+  <% end %>
 
-<p>
-  Location data © OpenStreetMap contributors.
-</p>
+  <% if @forecast.present? %>
+    <section>
+      <h2>
+        <%= @forecast[:city] %>,
+        <%= @forecast[:state] %>
+      </h2>
+
+      <p>ZIP Code: <%= @forecast[:zip_code] %></p>
+
+      <h3>Current Temperature</h3>
+
+      <p>
+        <strong>
+          <%= @forecast[:temperature] %><%= @forecast[:unit] %>
+        </strong>
+      </p>
+
+      <p>
+        High:
+        <%= @forecast[:high] %><%= @forecast[:unit] %>
+      </p>
+
+      <p>
+        Low:
+        <%= @forecast[:low] %><%= @forecast[:unit] %>
+      </p>
+
+      <% if @from_cache %>
+        <p>Cached result — updated within the last <%= @cache_time %> minutes</p>
+      <% else %>
+        <p>Fresh forecast</p>
+      <% end %>
+    </section>
+  <% end %>
+
+  <footer>
+    <small>Weather data provided by Open-Meteo.</small>
+    <small>Location data © OpenStreetMap contributors.</small>
+  </footer>
+</main>
