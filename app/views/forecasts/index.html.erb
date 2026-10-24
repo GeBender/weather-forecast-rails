@@ -1,65 +1,129 @@
-<main>
-  <h1>Weather Forecast</h1>
-
-  <p>Enter a US address to check the weather forecast.</p>
-
-  <%= form_with url: root_path, method: :get do |form| %>
-    <div>
-      <%= form.label :address, "Full Address" %>
-
-      <%= form.text_field :address,
-            value: @address,
-            placeholder: "1600 Pennsylvania Avenue NW, Washington, DC",
-            required: true,
-            size: 65 %>
+<div class="weather-app">
+  <header class="app-header">
+    <div class="brand">
+      <div class="brand-icon">☀</div>
+      <span>Weather Forecast</span>
     </div>
 
-    <div>
-      <%= form.submit "Get Forecast" %>
+    <span class="header-label">US WEATHER</span>
+  </header>
+
+  <main class="main-content">
+    <div class="page-intro">
+      <h1>Weather, wherever you are.</h1>
+      <p>Enter a US address to check the weather forecast.</p>
     </div>
-  <% end %>
 
-  <% if @error.present? %>
-    <p role="alert"><%= @error %></p>
-  <% end %>
+    <section class="search-card">
+      <%= form_with url: root_path, method: :get,
+                    html: { class: "search-form" } do |form| %>
 
-  <% if @forecast.present? %>
-    <section>
-      <h2>
-        <%= @forecast[:city] %>,
-        <%= @forecast[:state] %>
-      </h2>
+        <div class="form-group">
+          <%= form.label :address, "Full Address", class: "form-label" %>
 
-      <p>ZIP Code: <%= @forecast[:zip_code] %></p>
+          <%= form.text_field :address,
+                value: @address,
+                placeholder: "1600 Pennsylvania Avenue NW, Washington, DC",
+                required: true,
+                class: "address-input" %>
+        </div>
 
-      <h3>Current Temperature</h3>
-
-      <p>
-        <strong>
-          <%= @forecast[:temperature] %><%= @forecast[:unit] %>
-        </strong>
-      </p>
-
-      <p>
-        High:
-        <%= @forecast[:high] %><%= @forecast[:unit] %>
-      </p>
-
-      <p>
-        Low:
-        <%= @forecast[:low] %><%= @forecast[:unit] %>
-      </p>
-
-      <% if @from_cache %>
-        <p>Cached result — updated within the last <%= @cache_time %> minutes</p>
-      <% else %>
-        <p>Fresh forecast</p>
+        <%= form.submit "Get Forecast", class: "search-button" %>
       <% end %>
     </section>
-  <% end %>
 
-  <footer>
-    <small>Weather data provided by Open-Meteo.</small>
-    <small>Location data © OpenStreetMap contributors.</small>
+    <% if @error.present? %>
+      <div class="error-message" role="alert">
+        <span class="error-icon">!</span>
+        <span><%= @error %></span>
+      </div>
+    <% end %>
+
+    <% if @forecast.present? %>
+      <section class="forecast-card">
+
+        <div class="forecast-header">
+          <div>
+            <h2>
+              <%= @forecast[:city] %>,
+              <%= @forecast[:state] %>
+            </h2>
+
+            <p class="zip-code">
+              ZIP Code: <%= @forecast[:zip_code] %>
+            </p>
+          </div>
+
+          <% if @from_cache %>
+            <span class="cache-badge cached">
+              ● Cached result
+            </span>
+          <% else %>
+            <span class="cache-badge fresh">
+              ● Fresh forecast
+            </span>
+          <% end %>
+        </div>
+
+        <div class="current-weather">
+          <div class="weather-icon" aria-hidden="true">⛅</div>
+
+          <div class="temperature-info">
+            <h3>Current Temperature</h3>
+
+            <p class="current-temperature">
+              <strong>
+                <%= @forecast[:temperature] %><%= @forecast[:unit] %>
+              </strong>
+            </p>
+          </div>
+        </div>
+
+        <div class="temperature-details">
+          <div class="temperature-detail">
+            <div class="detail-icon high-icon">↑</div>
+
+            <div>
+              <span class="detail-label">Today's high</span>
+
+              <p class="detail-value">
+                High:
+                <%= @forecast[:high] %><%= @forecast[:unit] %>
+              </p>
+            </div>
+          </div>
+
+          <div class="temperature-detail">
+            <div class="detail-icon low-icon">↓</div>
+
+            <div>
+              <span class="detail-label">Today's low</span>
+
+              <p class="detail-value">
+                Low:
+                <%= @forecast[:low] %><%= @forecast[:unit] %>
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="forecast-footer">
+          <% if @from_cache %>
+            <p>
+              Cached result — updated within the last
+              <%= @cache_time %> minutes
+            </p>
+          <% else %>
+            <p>Fresh forecast</p>
+          <% end %>
+        </div>
+
+      </section>
+    <% end %>
+  </main>
+
+  <footer class="app-footer">
+    <p>Weather data provided by Open-Meteo.</p>
+    <p>Location data © OpenStreetMap contributors.</p>
   </footer>
-</main>
+</div>
