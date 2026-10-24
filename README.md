@@ -1,24 +1,41 @@
-# README
+# Weather Forecast
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+A small Rails app for checking the weather at a US address. Enter an address and the app finds its ZIP Code, then shows the current temperature and today's high and low in Fahrenheit.
 
-Things you may want to cover:
+## Run it locally
 
-* Ruby version
+You'll need Ruby 3.3.8, Bundler, and SQLite.
 
-* System dependencies
+```bash
+bundle install
+bin/rails db:prepare
+bin/rails server
+```
 
-* Configuration
+Open [http://localhost:3000](http://localhost:3000) and try an address, such as:
 
-* Database creation
+```text
+1600 Pennsylvania Avenue NW, Washington, DC
+```
 
-* Database initialization
+The app needs an internet connection when it has to look up an address or fetch a new forecast.
 
-* How to run the test suite
+## Where the data comes from
 
-* Services (job queues, cache servers, search engines, etc.)
+- [Nominatim](https://nominatim.org/) looks up addresses that don't already include a ZIP Code. It uses [OpenStreetMap data](https://www.openstreetmap.org/copyright).
+- [Zippopotam.us](https://www.zippopotam.us/) provides the location for a ZIP Code.
+- [Open-Meteo](https://open-meteo.com/) provides current conditions and the day's high and low.
 
-* Deployment instructions
+## Caching
 
-* ...
+Forecasts are cached by ZIP Code for 15 minutes, so another lookup in the same area can reuse the result. In development, Rails uses an in-memory cache, which is cleared when the app restarts.
+
+## Tests
+
+```bash
+bin/rails test
+bin/rubocop
+bin/brakeman
+```
+
+The service tests stub the external APIs, so they don't depend on those services being online.
