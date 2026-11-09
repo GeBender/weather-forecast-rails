@@ -1,7 +1,7 @@
 source "https://rubygems.org"
 
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
-gem "rails", "~> 8.0.4"
+gem "rails", "~> 8.1.4"
 # Rails 8.0 passes quirks_mode to JSON.generate, removed in json 3.0.
 gem "json", "< 3.0"
 # The modern asset pipeline for Rails [https://github.com/rails/propshaft]
